@@ -1,8 +1,13 @@
-function App() {
+import {routeList} from './routes/RouteLists';
+import Navbar from './components/Navbar';
+import {useRoutes} from "react-router-dom"
 
+function App() {
+  const element = useRoutes(routeList)
   return (
     <>
-      <h1 className="text-3xl font-bold underline" >Hello</h1>
+    <Navbar/>
+    {element}
     </>
   )
 }
