@@ -15,7 +15,11 @@ const Navbar = () => {
     </Link>
     <div className="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
       <button type="button" className="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-        <Link to="/login" >Login</Link>
+        {
+          localStorage.getItem("access_token") ?  <Link to="/" onClick={() => localStorage.removeItem("access_token")} >Logout</Link>:<Link to="/login" >Login</Link>
+        }
+        
+       
       </button>
       <button data-collapse-toggle="navbar-sticky" type="button" className="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
         <span className="sr-only">Open main menu</span>

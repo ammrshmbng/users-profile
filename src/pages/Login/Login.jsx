@@ -1,4 +1,62 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 const Login = () => {
+  const navigate = useNavigate();
+  const [input, setInput] = useState({ email: "", password: "" });
+  const [error, setError] = useState({ email: "", password: "" });
+
+  const handleInput = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const validateForm = () => {
+    let newErrors = { email: '', password: '' };
+
+    // Validasi Email
+    if (!input.email) {
+      newErrors.email = 'Email is required';
+    } else if (input.email !== 'eve.holt@reqres.in') {
+      newErrors.email = 'Email is not valid';
+    }
+
+    // Validasi Password
+    if (!input.password) {
+      newErrors.password = 'Password is required';
+    } else if (input.password !== 'cityslicka') {
+      newErrors.password = 'Password is not valid';
+    }
+
+    // Jika ada error, set error state
+    if (newErrors.email || newErrors.password) {
+      setError(newErrors);
+      return false;
+    }
+
+    // Reset error jika valid
+    setError({ email: '', password: '' });
+    return true;
+  };
+
+
+  const handleSubmit = () => {
+   
+    
+  if(validateForm()){
+    axios
+      .post("https://reqres.in/api/login", input)
+      .then((res) => {
+        localStorage.setItem("access_token", res.data.token );
+        navigate("/user-lists");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  };
+
+
   return (
     <div className="flex justify-center text-gray-900 bg-gray-100">
       <div className="flex justify-center flex-1 max-w-screen-xl mt-24 bg-white shadow sm:rounded-lg">
@@ -58,16 +116,26 @@ const Login = () => {
 
               <div className="max-w-xs mx-auto">
                 <input
+                  name="email"
+                  onChange={handleInput}
                   className="w-full px-8 py-4 text-sm font-medium placeholder-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 focus:bg-white"
                   type="email"
                   placeholder="Email"
                 />
+                {error.email && (
+          <span className="text-sm text-red-500">{error.email}</span>
+        )}
                 <input
+                  onChange={handleInput}
+                  name="password"
                   className="w-full px-8 py-4 mt-5 text-sm font-medium placeholder-gray-500 bg-gray-100 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400 focus:bg-white"
                   type="password"
                   placeholder="Password"
                 />
-                <button className="flex items-center justify-center w-full py-4 mt-5 font-semibold tracking-wide text-gray-100 transition-all duration-300 ease-in-out bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:shadow-outline focus:outline-none">
+                 {error.password && (
+          <span className="text-sm text-red-500">{error.password}</span>
+        )}
+                <button onClick={handleSubmit} className="flex items-center justify-center w-full py-4 mt-5 font-semibold tracking-wide text-gray-100 transition-all duration-300 ease-in-out bg-indigo-500 rounded-lg hover:bg-indigo-700 focus:shadow-outline focus:outline-none">
                   <svg
                     className="w-6 h-6 -ml-2"
                     fill="none"
@@ -80,10 +148,12 @@ const Login = () => {
                     <circle cx="8.5" cy="7" r="4" />
                     <path d="M20 8v6M23 11h-6" />
                   </svg>
-                  <span className="ml-3">Log In</span>
+                  <span  className="ml-3">
+                    Log In
+                  </span>
                 </button>
                 <p className="mt-6 text-xs text-center text-gray-600">
-                  I agree to abide by templatana's
+                  I agree to abide by templatanas
                   <a
                     href="#"
                     className="border-b border-gray-500 border-dotted"

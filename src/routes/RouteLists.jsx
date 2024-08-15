@@ -11,7 +11,7 @@ export const routeList = [
   },
   {
     path: "/user-lists",
-    element: <UserLists />,
+    element: <ProtectedRoute><UserLists /></ProtectedRoute>,
   },
   {
     path: "/login",
